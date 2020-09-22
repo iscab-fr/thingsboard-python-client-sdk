@@ -22,7 +22,7 @@ setup(
     url = 'https://github.com/iscab-fr/thingsboard-python-client-sdk',
     packages = find_packages(),
     include_package_data = True,
-    install_requires = ['paho-mqtt'],
+    install_requires = ['paho-mqtt', 'jsonschema'],
     author = "Thingsboard",
     author_email = "info@thingsboard.io",
     description = "ThingsBoard MQTT client Python SDK",
