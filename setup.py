@@ -12,12 +12,12 @@ except ImportError:
 ctx = {}
 
 if version_info[0] < 3:
-    execfile('tb-mqtt-client/_version.py', {}, ctx)
+    execfile('tbMQTT/_version.py', {}, ctx)
 else:
-    exec(compile(open('tb-mqtt-client/_version.py', "rb").read(), 'tb-mqtt-client/_version.py', 'exec'), {}, ctx)
+    exec(compile(open('tbMQTT/_version.py', "rb").read(), 'tbMQTT/_version.py', 'exec'), {}, ctx)
 
 setup(
-    name = "tb-mqtt-client",
+    name = "tbMQTT",
     version = ctx['__version__'],
     url = 'https://github.com/iscab-fr/thingsboard-python-client-sdk',
     packages = find_packages(),
