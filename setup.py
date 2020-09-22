@@ -12,9 +12,9 @@ except ImportError:
 ctx = {}
 
 if version_info[0] < 3:
-    execfile('_version.py', {}, ctx)
+    execfile('tb-mqtt-client/_version.py', {}, ctx)
 else:
-    exec(compile(open('_version.py', "rb").read(), '_version.py', 'exec'), {}, ctx)
+    exec(compile(open('tb-mqtt-client/_version.py', "rb").read(), 'tb-mqtt-client/_version.py', 'exec'), {}, ctx)
 
 setup(
     name = "tb-mqtt-client",

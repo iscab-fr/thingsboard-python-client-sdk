@@ -128,12 +128,14 @@ class TBDeviceMqttClient:
         self.__is_connected = False
         self.__device_on_server_side_rpc_response = None
         self.__connect_callback = None
+        self.__disconnect_callback = None
         self.__device_max_sub_id = 0
         self.__device_client_rpc_number = 0
         self.__device_sub_dict = {}
         self.__device_client_rpc_dict = {}
         self.__attr_request_number = 0
         self._client.on_connect = self._on_connect
+        self._client.on_disconnect = self._on_disconnect
         self._client.on_log = self._on_log
         self._client.on_publish = self._on_publish
         self._client.on_message = self._on_message
@@ -172,7 +174,7 @@ class TBDeviceMqttClient:
             else:
                 log.error("connection FAIL with unknown error")
 
-    def connect(self, callback=None, min_reconnect_delay=1, timeout=120, tls=False, port=1883, ca_certs=None, cert_file=None, key_file=None):
+    def connect(self, connect_callback=None, disconnect_callback=None, min_reconnect_delay=1, timeout=120, tls=False, port=1883, ca_certs=None, cert_file=None, key_file=None):
         if tls:
             self._client.tls_set(ca_certs=ca_certs,
                                  certfile=cert_file,
@@ -183,8 +185,16 @@ class TBDeviceMqttClient:
             self._client.tls_insecure_set(False)
         self._client.connect(self.__host, port)
         self._client.loop_start()
-        self.__connect_callback = callback
+        self.__connect_callback = connect_callback
+        self.__disconnect_callback = disconnect_callback
         self.reconnect_delay_set(min_reconnect_delay, timeout)
+
+    def _on_disconnect(self, client, userdata, rc):
+        if self.__disconnect_callback:
+            self.__disconnect_callback(client, userdata, rc)
+        if rc == 0:
+            self.__is_connected = False
+            log.info("disconnection SUCCESS")
 
     def disconnect(self):
         self._client.disconnect()
